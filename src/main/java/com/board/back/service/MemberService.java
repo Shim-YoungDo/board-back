@@ -4,6 +4,7 @@ import com.board.back.model.Member;
 import com.board.back.model.Result;
 import com.board.back.repository.MemberRepository;
 import jakarta.servlet.http.HttpSession;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -66,19 +67,39 @@ public class MemberService {
         Result result = new Result();
         try{
             // 회원정보 조회
-            Member member = memberRepository.findByMemberId(_member.getMemberId());
+            Member member = memberRepository.findByMemberIdAndMemberPw(_member.getMemberId(), _member.getMemberPw());
             if (member == null) {
                 result.setResultCode(Result.RESULT_CODE.FAIL);
-                result.setResultMessage("회원정보가 존재하지 않습니다.");
+                result.setResultMessage("아이디 또는 비밀번호가 일치하지 않습니다.");
                 return  result;
             }
             session.setAttribute("SID", member.getMemberId());
             session.setAttribute("SNAME", member.getMemberName());
 
+            JSONObject json = new JSONObject();
+            json.put("name", member.getMemberName()); // 프론트 표시용
+
+            result.setResultCode(Result.RESULT_CODE.SUCCESS);
+            result.setData(json.toString());
         } catch (Exception e){
             result.setResultCode(Result.RESULT_CODE.ERROR);
             result.setResultMessage(e.getMessage());
         }
+        return result;
+    }
+
+    /**
+     * 회원 정보 유효성 검사
+     */
+    public Result memberValidCheck(Member member){
+        Result result = new Result();
+        /**
+         * TODO 체크 항목
+         * 1. 아이디 길이 및 특수문자 체크
+         * 2. 비밀번호 길이 및 특수문자 체크
+         * 3. 이메일 길이 및 형식 체크
+         * 4. 이름 한영문
+         */
         return result;
     }
 }
