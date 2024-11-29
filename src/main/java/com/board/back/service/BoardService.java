@@ -25,10 +25,15 @@ public class BoardService {
         pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(Sort.Direction.DESC, "createdTime"));
 
         Page<Board> board = boardRepository.findAll(pageable);
-        List<Board> content = board.getContent();
+        List<Board> boardList = board.getContent();
+
+
+        for(Board board2 : boardList){
+            board2.setMemberId(board2.getMemberId().replaceAll(".{2}$", "**"));
+        }
 
         JSONObject json = new JSONObject();
-        json.put("boardList", board.getContent());
+        json.put("boardList", boardList);
         json.put("pageNo", board.getNumber());
         json.put("pageSize", board.getSize());
 
@@ -58,7 +63,12 @@ public class BoardService {
         try{
             Board board = boardRepository.findById(no)
                     .orElseThrow(() -> new Exception("Not exist Board Data by no : ["+no+"]"));
+
+            board.setMemberId(board.getMemberId().replaceAll(".{2}$", "**"));
             result.setResultCode(Result.RESULT_CODE.SUCCESS);
+            JSONObject json = new JSONObject(board);
+            json.put("updateAvalYn", "Y");
+            System.out.println("json = " + json.toString());
             result.setData(board);
         }catch (Exception e){
             result.setResultCode(Result.RESULT_CODE.ERROR);

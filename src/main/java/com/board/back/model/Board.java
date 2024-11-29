@@ -1,7 +1,6 @@
 package com.board.back.model;
 
 import jakarta.persistence.*;
-import org.hibernate.annotations.Collate;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -34,6 +33,9 @@ public class Board {
 
     @Column(name = "updated_time")
     private Date updatedTime;
+
+    @Column(name="member_id")
+    private String memberId;
 
     @Column(name = "likes")
     private Integer likes;
@@ -110,5 +112,13 @@ public class Board {
 
     public void setCounts(Integer counts) {
         this.counts = counts;
+    }
+
+    public String getMemberId() {
+        return memberId;
+    }
+
+    public void setMemberId(String memberId) {
+        this.memberId = memberId;
     }
 }

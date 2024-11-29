@@ -2,12 +2,10 @@ package com.board.back.controller;
 
 import com.board.back.model.Member;
 import com.board.back.model.Result;
-import com.board.back.service.BoardService;
 import com.board.back.service.MemberService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(origins = "http://localhost:3000")
@@ -29,7 +27,6 @@ public class MemberController {
 
     /**
      * 아이디 중복 체크
-     * @param member
      * @return
      */
     @PostMapping("/v1/customers/idCheck")
