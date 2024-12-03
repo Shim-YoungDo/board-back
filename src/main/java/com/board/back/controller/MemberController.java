@@ -64,4 +64,21 @@ public class MemberController {
         result.setResultMessage("로그아웃이 되었습니다.");
         return result;
     }
+
+    /**
+     * 로그인 체크
+     */
+    @GetMapping("/v1/customers/checkLogin")
+    public Result checkLogin(HttpServletRequest request){
+        Result result = new Result();
+        try{
+            HttpSession session = request.getSession();
+            if(session != null && session.getAttribute("SID") != null){
+                result.setResultCode(Result.RESULT_CODE.SUCCESS);
+            }
+        }catch (Exception e){
+
+        }
+        return result;
+    }
 }
