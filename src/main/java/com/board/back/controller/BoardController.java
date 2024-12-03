@@ -35,6 +35,12 @@ public class BoardController {
         return boardService.boardDetail(no, request);
     }
 
+    @PutMapping("/board/{no}")
+    public Result updateBoardByNo(@PathVariable Integer no, @RequestBody Board board, HttpServletRequest request) {
+
+        return boardService.updateBoard(no, board, request);
+    }
+
     @DeleteMapping("/board/{no}")
     public Result deleteBoard(@PathVariable Integer no){
         return boardService.deleteBoard(no);
