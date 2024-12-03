@@ -3,6 +3,8 @@ package com.board.back.service;
 import com.board.back.model.Board;
 import com.board.back.model.Result;
 import com.board.back.repository.BoardRepository;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -43,11 +45,15 @@ public class BoardService {
         return result;
     }
 
-    public Result createBoard(Board board){
+    public Result createBoard(Board board, HttpServletRequest request){
         Result result = new Result();
+        HttpSession session = request.getSession();
+
+        String sId = (String) session.getAttribute("SID");
 
         try{
             // TODO validate 추가 필요
+            board.setMemberId(sId);
             boardRepository.save(board);
             result.setResultCode(Result.RESULT_CODE.SUCCESS);
         } catch(Exception e){
@@ -58,18 +64,26 @@ public class BoardService {
         return result;
     }
 
-    public Result boardDetail(Integer no){
+    public Result boardDetail(Integer no, HttpServletRequest request){
         Result result = new Result();
+        HttpSession session = request.getSession(false);
+        String sId = "";
+
         try{
             Board board = boardRepository.findById(no)
                     .orElseThrow(() -> new Exception("Not exist Board Data by no : ["+no+"]"));
 
-            board.setMemberId(board.getMemberId().replaceAll(".{2}$", "**"));
+            if(session != null && session.getAttribute("SID") != null){
+                sId = (String) session.getAttribute("SID");
+            }
+            String updateAvalYn =sId.equals(board.getMemberId()) ? "Y" : "N"; // 수정 가능 여부
+
+            board.setMemberId(board.getMemberId().replaceAll(".{2}$", "**")); // 화면에 노출될 ID 마스킹 처리(뒤 2자리)
             result.setResultCode(Result.RESULT_CODE.SUCCESS);
             JSONObject json = new JSONObject(board);
-            json.put("updateAvalYn", "Y");
-            System.out.println("json = " + json.toString());
-            result.setData(board);
+
+            json.put("updateAvalYn", updateAvalYn);
+            result.setData(json.toString());
         }catch (Exception e){
             result.setResultCode(Result.RESULT_CODE.ERROR);
             result.setResultMessage(e.getMessage());

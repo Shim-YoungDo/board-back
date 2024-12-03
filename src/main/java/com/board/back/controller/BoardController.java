@@ -3,6 +3,7 @@ package com.board.back.controller;
 import com.board.back.model.Board;
 import com.board.back.model.Result;
 import com.board.back.service.BoardService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
@@ -25,13 +26,13 @@ public class BoardController {
     }
 
     @PostMapping("/board")
-    public Result createBoard(@RequestBody Board board){
-        return boardService.createBoard(board);
+    public Result createBoard(@RequestBody Board board, HttpServletRequest request){
+        return boardService.createBoard(board, request);
     }
 
     @GetMapping("/board/{no}")
-    public Result getBoardDetail(@PathVariable Integer no){
-        return boardService.boardDetail(no);
+    public Result getBoardDetail(@PathVariable Integer no, HttpServletRequest request){
+        return boardService.boardDetail(no, request);
     }
 
     @DeleteMapping("/board/{no}")
