@@ -25,9 +25,6 @@ public class Board {
     @Column(name="contents")
     private String contents;
 
-    @Column(name="member_no")
-    private Integer memberNo;
-
     @Column(name = "created_time")
     private Date createdTime;
 
@@ -72,14 +69,6 @@ public class Board {
 
     public void setContents(String contents) {
         this.contents = contents;
-    }
-
-    public Integer getMemberNo() {
-        return memberNo;
-    }
-
-    public void setMemberNo(Integer memberNo) {
-        this.memberNo = memberNo;
     }
 
     public Date getCreatedTime() {
