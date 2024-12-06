@@ -50,6 +50,12 @@ public class BoardService {
         Result result = new Result();
         HttpSession session = request.getSession();
 
+        if(session == null && session.getAttribute("SID") == null ){
+            result.setResultCode(Result.RESULT_CODE.FAIL);
+            result.setResultMessage("장시간 입력이 없어 정보를 가져올 수 없습니다. 다시 진행해주세요.");
+            result.setApiResultCode("0099");
+            return result;
+        }
         String sId = (String) session.getAttribute("SID");
 
         try{
@@ -72,6 +78,13 @@ public class BoardService {
     public Result updateBoard(Integer no, Board updatedBoard, HttpServletRequest request) {
         Result result = new Result();
         HttpSession session = request.getSession();
+        if(session == null && session.getAttribute("SID") == null ){
+            result.setResultCode(Result.RESULT_CODE.FAIL);
+            result.setResultMessage("장시간 입력이 없어 정보를 가져올 수 없습니다. 다시 진행해주세요.");
+            result.setApiResultCode("0099");
+            return result;
+        }
+
         try{
             Result validResult = this.validationCheck(updatedBoard);
             if(!validResult.getResultCode().equals(Result.RESULT_CODE.SUCCESS)){
@@ -153,11 +166,28 @@ public class BoardService {
         return result;
     }
 
-    public Result deleteBoard(Integer no){
+    public Result deleteBoard(Integer no, HttpServletRequest request){
         Result result = new Result();
+        HttpSession session = request.getSession();
+
+        if(session == null && session.getAttribute("SID") == null ){
+            result.setResultCode(Result.RESULT_CODE.FAIL);
+            result.setResultMessage("장시간 입력이 없어 정보를 가져올 수 없습니다. 다시 진행해주세요.");
+            result.setApiResultCode("0099");
+            return result;
+        }
+        
         try{
             Board board = boardRepository.findById(no)
                     .orElseThrow(() -> new Exception("Not exist Board Data by no : ["+no+"]"));
+           
+            if(!session.getAttribute("SID").equals(board.getMemberId())){
+                // 작성자와 로그인한 사용자 체크
+                result.setResultCode(Result.RESULT_CODE.FAIL);
+                result.setResultMessage("삭제 권한이 없습니다.");
+                return  result;
+            }
+            
             boardRepository.delete(board);
             result.setResultCode(Result.RESULT_CODE.SUCCESS);
             result.setData(board);

@@ -42,7 +42,7 @@ public class BoardController {
     }
 
     @DeleteMapping("/board/{no}")
-    public Result deleteBoard(@PathVariable Integer no){
-        return boardService.deleteBoard(no);
+    public Result deleteBoard(@PathVariable Integer no, HttpServletRequest request){
+        return boardService.deleteBoard(no, request);
     }
 }

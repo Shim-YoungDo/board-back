@@ -6,12 +6,21 @@ public class Result {
 
     private RESULT_CODE resultCode;
     private String resultMessage;
+    private String apiResultCode;
 
     private Object data;
 
     public Result (){
         this.resultCode = RESULT_CODE.FAIL;
         this.resultMessage = "";
+    }
+
+    public String getApiResultCode() {
+        return apiResultCode;
+    }
+
+    public void setApiResultCode(String apiResultCode) {
+        this.apiResultCode = apiResultCode;
     }
 
     public RESULT_CODE getResultCode() {
