@@ -130,7 +130,7 @@ public class BoardService {
 
         if(board.getContents().length() > 100){
             result.setResultCode(Result.RESULT_CODE.FAIL);
-            result.setResultMessage("제목은 최대 100글자까지 가능합니다.");
+            result.setResultMessage("내용은 최대 100글자까지 가능합니다.");
             return result;
         }
 

@@ -87,19 +87,4 @@ public class MemberService {
         }
         return result;
     }
-
-    /**
-     * 회원 정보 유효성 검사
-     */
-    public Result memberValidCheck(Member member){
-        Result result = new Result();
-        /**
-         * TODO 체크 항목
-         * 1. 아이디 길이 및 특수문자 체크
-         * 2. 비밀번호 길이 및 특수문자 체크
-         * 3. 이메일 길이 및 형식 체크
-         * 4. 이름 한영문
-         */
-        return result;
-    }
 }
